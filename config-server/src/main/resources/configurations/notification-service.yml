@@ -1,0 +1,49 @@
+server:
+  port: 8040
+
+spring:
+  kafka:
+    bootstrap-servers: kafka:19092
+    consumer:
+      group-id: brand-notification-group,product-notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: brandNotification:com.cosmetics.kafka.BrandNotification,productNotification:com.cosmetics.kafka.ProductNotification
+  mail:
+    host: mail-dev
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+          starttls:
+            enabled: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+eureka:
+  instance:
+    hostname: notification-service
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    com.cosmetics.brand: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true

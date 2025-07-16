@@ -1,0 +1,8 @@
+server:
+  port: 8082
+
+spring:
+  config:
+    import: configserver:http://config-server:8888
+  application:
+    name: brand-service
