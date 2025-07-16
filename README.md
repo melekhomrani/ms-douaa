@@ -196,6 +196,124 @@ docker-compose logs -f <service-name>
 - **Product API**: http://localhost:8989/api/products/**
 - **Authentication**: http://localhost:5050/token/**
 
+### 🔐 Authentication Tutorial
+
+To authenticate and get a JWT token from Keycloak via the authentication service:
+
+#### Using cURL:
+
+```bash
+# Get JWT token using username/password
+curl -X POST http://localhost:5050/token/client-credentials \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=douaa&password=melek"
+```
+
+#### Response:
+```json
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 300
+}
+```
+
+#### Using the Token:
+```bash
+# Use the token in API requests
+curl -X GET http://localhost:8989/api/brands \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN_HERE"
+```
+
+**📝 Credentials:**
+- **Username**: `douaa`
+- **Password**: `melek`
+
+### 🎯 API Usage Examples
+
+#### 1️⃣ Create a Brand
+
+```bash
+# First, get your authentication token
+TOKEN=$(curl -s -X POST http://localhost:5050/token/client-credentials \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=douaa&password=melek" | jq -r '.access_token')
+
+# Create a new brand
+curl -X POST http://localhost:8989/api/brands \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "L'\''Oreal",
+    "description": "French cosmetics brand",
+    "country": "France",
+    "website": "https://www.loreal.com"
+  }'
+```
+
+#### Response:
+```json
+{
+  "id": 1,
+  "name": "L'Oreal",
+  "description": "French cosmetics brand",
+  "country": "France",
+  "website": "https://www.loreal.com",
+  "createdAt": "2025-07-16T10:30:00Z"
+}
+```
+
+#### 2️⃣ Create a Product (with brandId)
+
+```bash
+# Create a product using the brand ID from the previous step
+curl -X POST http://localhost:8989/api/products \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Revitalift Day Cream",
+    "description": "Anti-aging day cream with SPF 30",
+    "price": 29.99,
+    "category": "Skincare",
+    "brandId": 1,
+    "stock": 150
+  }'
+```
+
+#### Response:
+```json
+{
+  "id": "64f8b2c4e8d1a2b3c4d5e6f7",
+  "name": "Revitalift Day Cream",
+  "description": "Anti-aging day cream with SPF 30",
+  "price": 29.99,
+  "category": "Skincare",
+  "brandId": 1,
+  "stock": 150,
+  "createdAt": "2025-07-16T10:35:00Z"
+}
+```
+
+#### 3️⃣ Get All Brands
+
+```bash
+curl -X GET http://localhost:8989/api/brands \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+#### 4️⃣ Get All Products
+
+```bash
+curl -X GET http://localhost:8989/api/products \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**⚠️ Important Notes:**
+- **Always create brands first** before creating products
+- **Use the brand `id`** from the response when creating products
+- **brandId is required** for all products
+- **Email notifications** will be sent to MailDev (http://localhost:1080) for both operations
+
 ### 📈 Monitoring
 
 - **Health Checks**: All services expose `/actuator/health`
