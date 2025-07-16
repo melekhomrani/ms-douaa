@@ -14,11 +14,11 @@ spring:
               lower-case-service-id: true
           routes:
             - id: product-service
-              uri: lb://MS-PRODUCT
+              uri: lb://PRODUCT-SERVICE
               predicates:
                 - Path=/api/products/**
             - id: brand-service
-              uri: lb://MS-MANUFACTURER
+              uri: lb://BRAND-SERVICE
               predicates:
                 - Path=/api/brands/**
           globalcors:

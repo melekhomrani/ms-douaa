@@ -14,7 +14,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.cosmetics.notification.email.EmailTemplates.NEW_MANUFACTURER_ADDED;
+import static com.cosmetics.notification.email.EmailTemplates.NEW_BRAND_ADDED;
 import static com.cosmetics.notification.email.EmailTemplates.NEW_PRODUCT_ADDED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -37,7 +37,7 @@ public class EmailService {
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
         messageHelper.setFrom("contact@cosmetics.com");
 
-        final String templateName = NEW_MANUFACTURER_ADDED.getTemplate();
+        final String templateName = NEW_BRAND_ADDED.getTemplate();
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("name", name);
@@ -46,7 +46,7 @@ public class EmailService {
 
         Context context = new Context();
         context.setVariables(variables);
-        messageHelper.setSubject(NEW_MANUFACTURER_ADDED.getSubject());
+        messageHelper.setSubject(NEW_BRAND_ADDED.getSubject());
 
         try {
             String htmlTemplate = templateEngine.process(templateName, context);

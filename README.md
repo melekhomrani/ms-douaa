@@ -158,7 +158,7 @@ docker-compose logs -f <service-name>
 | **Eureka Server** | 8761 | Service registry and discovery | Netflix Eureka | - |
 | **API Gateway** | 8989 | Single entry point, routing, load balancing | Spring Cloud Gateway | - |
 | **Authentication** | 5050 | User authentication and token management | Node.js + Keycloak | - |
-| **Brand Service** | 8083 | Brand/manufacturer CRUD operations | Spring Boot + JPA | MySQL |
+| **Brand Service** | 8083 | Brand/brand CRUD operations | Spring Boot + JPA | MySQL |
 | **Product Service** | 8084 | Product catalog management | Spring Boot + MongoDB | MongoDB |
 | **Notification Service** | 8040 | Email notifications via Kafka events | Spring Boot + Mail | - |
 | **Keycloak** | 18080 | Identity and Access Management | Keycloak | PostgreSQL |

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum EmailTemplates {
 
-    NEW_MANUFACTURER_ADDED("brand-notification.html", "New brand added"),
+    NEW_BRAND_ADDED("brand-notification.html", "New brand added"),
     NEW_PRODUCT_ADDED("product-notification.html", "New product added")
     ;
 
